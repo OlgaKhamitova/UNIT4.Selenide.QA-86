@@ -1,7 +1,11 @@
 
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.Keys;
+
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
@@ -12,11 +16,13 @@ public class CardDeliveryTest {
     @Test
     public void testCardDelivery() {
         LocalDate currentDate = LocalDate.now();
-        LocalDate date = currentDate.plusDays(3);
+        LocalDate date = currentDate.plusDays(10);
 
         open("http://localhost:9999/");
         $("[data-test-id=city] input").setValue("Нижний Новгород");
-        $("[data-test-id=date] input").setValue(String.valueOf(date));
+        $("[data-test-id=date] input").sendKeys(Keys.chord(Keys.CONTROL, "a"));
+        $("[data-test-id=date] input").sendKeys(Keys.BACK_SPACE);
+        $("[data-test-id=date] input").setValue(date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
         $("[data-test-id=name] input").setValue("Хамитова Ольга");
         $("[data-test-id=phone] input").setValue("+79991111111");
         $("[data-test-id=agreement]").click();
